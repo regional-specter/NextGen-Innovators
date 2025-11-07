@@ -1,0 +1,17 @@
+Main Project Todo:
+     ✔ Initiate git repo @done(25-11-07 09:41)
+     ☐ Finalise ML model framework and overall app structure
+     ☐ Make list of all features being collected & used in ML processing
+     ☐ Outline Business Problem being solved by use of ML pipelines
+     ☐ Finalise and Begin application UI design
+
+ML Model Specific Todo:
+     ☐ Make list of all numerical data being collected with sources
+     ☐ Specify the model being used and model output
+     ☐ Model Eval metrics and data pre-processing
+     ☐ Model output refinement and model fine-tuning
+
+App Specific Todo:
+     ☐ Model output collection and GPT integration
+     ☐ App UI Design and Implementation with Expo Go Tech Stack
+     ☐ Integrate ML Model evaluations and GPT output into design
