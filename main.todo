@@ -1,13 +1,13 @@
 Main Project Todo:
      ✔ Initiate git repo @done(25-11-07 09:41)
-     ☐ Finalise ML model framework and overall app structure
-     ☐ Make list of all features being collected & used in ML processing
+     ✔ Finalise ML model framework and overall app structure @done(25-11-08 22:08)
+     ✔ Make list of all features being collected & used in ML processing @done(25-11-08 22:08)
      ☐ Outline Business Problem being solved by use of ML pipelines
      ☐ Finalise and Begin application UI design
 
 ML Model Specific Todo:
-     ☐ Make list of all numerical data being collected with sources
-     ☐ Specify the model being used and model output
+     ✔ Make list of all numerical data being collected with sources @done(25-11-08 22:08)
+     ✔ Specify the model being used and model output @done(25-11-08 22:08)
      ☐ Model Eval metrics and data pre-processing
      ☐ Model output refinement and model fine-tuning
 
