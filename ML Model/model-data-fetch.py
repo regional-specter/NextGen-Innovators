@@ -25,6 +25,29 @@ def fetch_images(query, num_images=80, base_folder='birds'):
         os.rmdir(src_folder)
     print(f"✅ Done: Saved all images to {save_path}")
 
-# Run for both species
 
-fetch_images("Greater Spotted Eagle", 100)
+def delete_zero_byte_images(base_folder='birds'):
+    """
+    Deletes only images that have zero bytes of data from all subdirectories.
+    """
+    deleted_count = 0
+    checked_count = 0
+
+    for root, _, files in os.walk(base_folder):
+        for file in files:
+            file_path = os.path.join(root, file)
+            checked_count += 1
+            if os.path.getsize(file_path) == 0:
+                os.remove(file_path)
+                deleted_count += 1
+                print(f"⚠️ Removed zero-byte file: {file_path}")
+
+    print(f"\n✅ Checked {checked_count} files — Removed {deleted_count} empty files.")
+
+
+
+# Run for both species
+fetch_images("Greater Flamingo", 200)
+fetch_images("Greater Spotted Eagle", 200)
+
+delete_zero_byte_images('birds')
