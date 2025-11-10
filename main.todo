@@ -8,10 +8,10 @@ Main Project Todo:
 ML Model Specific Todo:
      ✔ Make list of all numerical data being collected with sources @done(25-11-08 22:08)
      ✔ Specify the model being used and model output @done(25-11-08 22:08)
-     ☐ Model Eval metrics and data pre-processing
-     ☐ Model output refinement and model fine-tuning
+     ✔ Model Eval metrics and data pre-processing @done(25-11-10 19:04)
+     ✔ Model output refinement and model fine-tuning @done(25-11-10 19:05)
 
 App Specific Todo:
      ☐ Model output collection and GPT integration
-     ☐ App UI Design and Implementation with Expo Go Tech Stack
+     ✔ App UI Design and Implementation with Expo Go Tech Stack @done(25-11-10 19:05)
      ☐ Integrate ML Model evaluations and GPT output into design
