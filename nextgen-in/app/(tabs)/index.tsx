@@ -2,6 +2,8 @@ import { Image } from 'expo-image';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
+import { Typography } from '@/styles/typography';
+
 
 export default function HomeScreen() {
   const [fontsLoaded] = useFonts({
@@ -284,6 +286,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFCACA',
   },
   badgeText: {
+    ...Typography.medium,
     fontSize: 9,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
