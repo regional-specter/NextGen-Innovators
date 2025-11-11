@@ -38,6 +38,18 @@
             "backgroundColor": "#01845D"
           }
         }
+      ],
+      [
+        "expo-font",
+        [
+          "./assets/fonts/FiraSans-MediumItalic.ttf",
+          "./assets/fonts/Gabarito-Regular.ttf",
+          "./assets/fonts/Gabarito-Medium.ttf",
+          "./assets/fonts/Gabarito-SemiBold.ttf",
+          "./assets/fonts/Gabarito-Bold.ttf",
+          "./assets/fonts/FiraSans-Medium.ttf",
+          "./assets/fonts/FiraSans-Regular.ttf"
+        ]
       ]
     ],
     "experiments": {
