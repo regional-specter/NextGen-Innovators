@@ -80,9 +80,63 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Calendar Peak View */}
-          <View style={styles.recentSection}>
-            
+          {/* Water Health Score Calendar */}
+          <View style={styles.healthScoreCard}>
+            <View style={styles.healthScoreHeader}>
+              <View style={styles.blueCircle}>
+                <Text style={styles.dropletIcon}>💧</Text>
+              </View>
+              <View style={styles.healthScoreTextContainer}>
+                <Text style={styles.healthScoreTitle}>Water Health Score</Text>
+                <Text style={styles.healthScoreSubtitle}>Goal : 95% Health Score | 3 times a day</Text>
+              </View>
+            </View>
+
+            <View style={styles.statsRow}>
+              <View style={styles.statItem}>
+                <Text style={styles.statValue}>133 <Text style={styles.statUnit}>Days</Text></Text>
+                <Text style={styles.statLabel}>Best Score</Text>
+              </View>
+              <View style={styles.statItem}>
+                <Text style={styles.statValue}>78% <Text style={styles.statUnit}>WHI</Text></Text>
+                <Text style={styles.statLabel}>Average Score</Text>
+              </View>
+              <View style={styles.statItem}>
+                <Text style={styles.statValue}>+18% <Text style={styles.statUnit}>WHI</Text></Text>
+                <Text style={styles.statLabel}>Aggregate Trend</Text>
+              </View>
+            </View>
+
+            <View style={styles.weekCalendar}>
+              {[
+                { day: 'Mon', percentage: 91 },
+                { day: 'Tue', percentage: 62 },
+                { day: 'Wed', percentage: 97 },
+                { day: 'Thu', percentage: 96 },
+                { day: 'Fri', percentage: 0, date: 14 },
+                { day: 'Sat', percentage: 0, date: 15 },
+                { day: 'Sun', percentage: 0, date: 16 },
+              ].map((item, index) => (
+                <View key={index} style={styles.dayItem}>
+                  <Text style={styles.dayLabel}>{item.day}</Text>
+                  <View style={[
+                    styles.dayCircle,
+                    item.percentage === 0 && styles.dayCircleGrey,
+                    item.percentage > 0 && item.percentage < 50 && styles.dayCircleYellow,
+                    item.percentage >= 50 && styles.dayCircleGreen,
+                  ]}>
+                    {item.percentage === 0 ? (
+                      <Text style={styles.dateNumber}>{item.date}</Text>
+                    ) : (
+                      <Text style={styles.checkIcon}>✓</Text>
+                    )}
+                  </View>
+                  <Text style={styles.percentageLabel}>
+                    {item.percentage === 0 ? '—' : `${item.percentage}%`}
+                  </Text>
+                </View>
+              ))}
+            </View>
           </View>
 
           {/* Recent Activities */}
@@ -301,5 +355,117 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
+  },
+  healthScoreCard: {
+    width: '100%',
+    backgroundColor: '#FCFCFC',
+    borderWidth: 1,
+    borderColor: '#DEDEDE',
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 24,
+  },
+  healthScoreHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  blueCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#4A90E2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  dropletIcon: {
+    fontSize: 24,
+  },
+  healthScoreTextContainer: {
+    flex: 1,
+  },
+  healthScoreTitle: {
+    fontSize: 18,
+    fontFamily: 'Gabarito-Medium',
+    color: '#000',
+    marginBottom: 2,
+  },
+  healthScoreSubtitle: {
+    fontSize: 11,
+    fontFamily: 'Gabarito-Medium',
+    color: '#999',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    paddingHorizontal: 8,
+  },
+  statItem: {
+    alignItems: 'flex-start',
+  },
+  statValue: {
+    fontSize: 24,
+    fontFamily: 'Gabarito-Medium',
+    color: '#000',
+    marginBottom: 2,
+  },
+  statUnit: {
+    fontSize: 16,
+    fontFamily: 'Gabarito-Medium',
+    color: '#000',
+  },
+  statLabel: {
+    fontSize: 10,
+    fontFamily: 'Gabarito-Medium',
+    color: '#999',
+  },
+  weekCalendar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
+    gap: 8,
+  },
+  dayItem: {
+    alignItems: 'center',
+  },
+  dayLabel: {
+    fontSize: 11,
+    fontFamily: 'Gabarito-Medium',
+    color: '#999',
+    marginBottom: 8,
+  },
+  dayCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  dayCircleGrey: {
+    backgroundColor: '#E0E0E0',
+  },
+  dayCircleYellow: {
+    backgroundColor: '#E5B23E',
+  },
+  dayCircleGreen: {
+    backgroundColor: '#00D06F',
+  },
+  checkIcon: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  dateNumber: {
+    fontSize: 18,
+    fontFamily: 'Gabarito-Medium',
+    color: '#000',
+  },
+  percentageLabel: {
+    fontSize: 10,
+    fontFamily: 'Gabarito-Medium',
+    color: '#666',
   },
 });
