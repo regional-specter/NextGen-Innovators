@@ -20,7 +20,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#08C289', '#05A474', '#05A474']}
+        colors={['#2D74F8', '#074DCF', '#074DCF']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradientBackground}
@@ -28,7 +28,7 @@ export default function HomeScreen() {
         {/* Top Bar */}
         <View style={styles.topBar}>
           <Image
-            source={require('@/assets/images/partial-react-logo.png')}
+            source={require('@/assets/images/splash-logo.png')}
             style={styles.logo}
           />
           <View style={styles.topBarRight}>
@@ -80,13 +80,18 @@ export default function HomeScreen() {
             </View>
           </View>
 
+          {/* Calendar Peak View */}
+          <View style={styles.recentSection}>
+            
+          </View>
+
           {/* Recent Activities */}
           <View style={styles.recentSection}>
             <Text style={styles.sectionHeading}>Recent Activities</Text>
             
             <View style={styles.activityItem}>
               <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Greater Flamingo Population Increase</Text>
+                <Text style={styles.activityTitle}>Dissolved Oxygen Increase by 14%</Text>
                 <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
               </View>
               <View style={styles.activityBadge}>
@@ -96,7 +101,7 @@ export default function HomeScreen() {
 
             <View style={styles.activityItem}>
               <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Greater Flamingo Population Increase</Text>
+                <Text style={styles.activityTitle}>Water Turbidity levels Increase</Text>
                 <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
               </View>
               <View style={styles.activityBadge}>
@@ -106,7 +111,7 @@ export default function HomeScreen() {
 
             <View style={styles.activityItem}>
               <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Greater Flamingo Population Decrease</Text>
+                <Text style={styles.activityTitle}>Water pH Levels Decrease below stable</Text>
                 <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
               </View>
               <View style={[styles.activityBadge, styles.activityBadgeNegative]}>
@@ -116,7 +121,7 @@ export default function HomeScreen() {
 
             <View style={styles.activityItem}>
               <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Greater Flamingo Population Increase</Text>
+                <Text style={styles.activityTitle}>Water Salinity Increase</Text>
                 <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
               </View>
               <View style={styles.activityBadge}>
@@ -146,9 +151,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   logo: {
-    width: 120,
-    height: 40,
+    width: 140,
+    height: 60,
     resizeMode: 'contain',
+    alignSelf: 'center', // centers it without extra spacing
   },
   topBarRight: {
     flexDirection: 'row',
@@ -189,8 +195,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   statusHeading: {
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: 'Gabarito-Medium',
+    letterSpacing: -0.5,
     color: '#333',
   },
   infoIcon: {
@@ -208,6 +215,7 @@ const styles = StyleSheet.create({
   statusValue: {
     fontSize: 32,
     fontFamily: 'Gabarito-Medium',
+    letterSpacing: -0.7,
     color: '#000',
   },
   buttonGroup: {
@@ -242,10 +250,11 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   sectionHeading: {
-    fontSize: 13,
+    fontSize: 18,
     fontFamily: 'Gabarito-Medium',
     color: '#333',
     marginBottom: 16,
+    letterSpacing: -0.45
   },
   activityItem: {
     width: '100%',
@@ -253,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCFCFC',
     borderWidth: 1,
     borderColor: '#DEDEDE',
-    borderRadius: 6,
+    borderRadius: 7,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -276,14 +285,16 @@ const styles = StyleSheet.create({
     color: '#999',
   },
   activityBadge: {
-    backgroundColor: '#C8F7DC',
+    backgroundColor: '#7CFF98',
+    opacity: 0.75,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 4,
+    borderRadius: 9,
     marginLeft: 12,
   },
   activityBadgeNegative: {
-    backgroundColor: '#FFCACA',
+    backgroundColor: '#FC6363',
+    opacity: 0.75
   },
   badgeText: {
     ...Typography.medium,

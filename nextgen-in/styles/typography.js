@@ -10,7 +10,7 @@ export const Typography = {
      },
      semiBold: {
        fontFamily: 'Gabarito-SemiBold',
-       letterSpacing: 0.4,
+       letterSpacing: 0.1,
      },
      bold: {
        fontFamily: 'Gabarito-Bold',
