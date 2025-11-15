@@ -110,7 +110,7 @@ export default function HomeScreen() {
             <View style={styles.weekCalendar}>
               {[
                 { day: 'Mon', percentage: 91 },
-                { day: 'Tue', percentage: 62 },
+                { day: 'Tue', percentage: 49 },
                 { day: 'Wed', percentage: 97 },
                 { day: 'Thu', percentage: 96 },
                 { day: 'Fri', percentage: 0, date: 14 },
@@ -386,13 +386,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   healthScoreTitle: {
-    fontSize: 18,
+    fontSize: 23,
+    letterSpacing: -0.5,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
     marginBottom: 2,
   },
   healthScoreSubtitle: {
-    fontSize: 11,
+    fontSize: 14,
+    letterSpacing: -0.5,
     fontFamily: 'Gabarito-Medium',
     color: '#999',
   },
@@ -406,18 +408,20 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 26,
+    letterSpacing: -0.5,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
     marginBottom: 2,
   },
   statUnit: {
-    fontSize: 16,
+    fontSize: 17,
+    letterSpacing: -0.2,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
   },
   statLabel: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: 'Gabarito-Medium',
     color: '#999',
   },
