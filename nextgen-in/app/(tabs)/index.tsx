@@ -317,8 +317,8 @@ const styles = StyleSheet.create({
   whiteBox: {
     flex: 1,
     backgroundColor: '#fff',
-    borderTopLeftRadius: 41,
-    borderTopRightRadius: 41,
+    borderTopLeftRadius: 34,
+    borderTopRightRadius: 34,
     paddingHorizontal: 20,
     paddingTop: 24,
   },
@@ -353,11 +353,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Gabarito-Medium',
     letterSpacing: -0.7,
     color: '#000',
+    marginBottom: -13
   },
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 24,
+    marginLeft: -6,
     gap: 6,
   },
   actionButton: {
