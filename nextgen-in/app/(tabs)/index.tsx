@@ -32,12 +32,42 @@ export default function HomeScreen() {
             style={styles.logo}
           />
           <View style={styles.topBarRight}>
-            <View style={styles.iconButton}>
-              <Text style={styles.iconText}>🔔</Text>
+          <View style={{
+            flexDirection: 'row',
+            gap: 17,
+            padding: 8,
+          }}>
+
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Image
+                source={require('@/assets/icons/notif-bell.svg')}
+                style={{
+                  width: 27,
+                  height: 27,
+                  resizeMode: 'contain',
+                }}
+              />
             </View>
-            <View style={styles.iconButton}>
-              <Text style={styles.iconText}>❓</Text>
+
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Image
+                source={require('@/assets/icons/question.svg')}
+                style={{
+                  width: 27,
+                  height: 27,
+                  resizeMode: 'contain',
+                }}
+              />
             </View>
+
+          </View>
+
             <Image
               source={{ uri: 'https://via.placeholder.com/40' }}
               style={styles.profileImage}
@@ -51,40 +81,92 @@ export default function HomeScreen() {
           <View style={styles.statusWidget}>
             <View style={styles.statusHeader}>
               <Text style={styles.statusHeading}>Ecosystem Real-time Status</Text>
-              <View style={styles.infoIcon}>
-                <Text style={styles.infoIconText}>ℹ️</Text>
-              </View>
+                <View style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <Image
+                    source={require('@/assets/icons/info.svg')}
+                    style={{
+                      width: 15,
+                      height: 15,
+                      marginLeft: 6,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
             </View>
             <Text style={styles.statusValue}>Very Good</Text>
           </View>
 
           {/* Action Buttons */}
           <View style={styles.buttonGroup}>
+
             <View style={styles.actionButton}>
               <View style={styles.buttonIconContainer}>
-                <Text style={styles.buttonIcon}>➕</Text>
+                <Image
+                  source={require('@/assets/icons/add.svg')}
+                  style={{
+                    width: 23,
+                    height: 23,
+                    marginTop: 5,
+                    resizeMode: 'contain',
+                  }}
+                />
               </View>
               <Text style={styles.buttonLabel}>Add new BioTrace Unit</Text>
             </View>
+
             <View style={styles.actionButton}>
               <View style={styles.buttonIconContainer}>
-                <Text style={styles.buttonIcon}>📥</Text>
+                <Image
+                  source={require('@/assets/icons/import-download.svg')}
+                  style={{
+                    width: 23,
+                    height: 23,
+                    marginTop: 5,
+                    resizeMode: 'contain',
+                  }}
+                />
               </View>
               <Text style={styles.buttonLabel}>Get Monthly Report</Text>
             </View>
+
             <View style={styles.actionButton}>
               <View style={styles.buttonIconContainer}>
-                <Text style={styles.buttonIcon}>📝</Text>
+                <Image
+                  source={require('@/assets/icons/folder-add.svg')}
+                  style={{
+                    width: 23,
+                    height: 23,
+                    marginTop: 5,
+                    resizeMode: 'contain',
+                  }}
+                />
               </View>
               <Text style={styles.buttonLabel}>Manual data entry</Text>
             </View>
+
           </View>
+
 
           {/* Water Health Score Calendar */}
           <View style={styles.healthScoreCard}>
             <View style={styles.healthScoreHeader}>
               <View style={styles.blueCircle}>
-                <Text style={styles.dropletIcon}>💧</Text>
+                <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <Image
+                      source={require('@/assets/icons/water-droplet.svg')}
+                      style={{
+                        width: 29,
+                        height: 29,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </View>
               </View>
               <View style={styles.healthScoreTextContainer}>
                 <Text style={styles.healthScoreTitle}>Water Health Score</Text>
@@ -205,8 +287,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   logo: {
-    width: 140,
-    height: 60,
+    width: 150,
+    height: 70,
     resizeMode: 'contain',
     alignSelf: 'center', // centers it without extra spacing
   },
@@ -227,9 +309,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 60,
     backgroundColor: '#fff',
   },
   whiteBox: {
@@ -295,9 +377,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   buttonLabel: {
-    fontSize: 9,
+    fontSize: 10,
+    letterSpacing: -0.3,
     fontFamily: 'Gabarito-Medium',
     color: '#333',
+    marginTop: 5,
     lineHeight: 11,
   },
   recentSection: {
