@@ -34,6 +34,8 @@ export default function HomeScreen() {
     { percentage: 97 },
     { percentage: 88 },
     { percentage: 88 },
+    { percentage: 88 },
+    { percentage: 88 },
   ];
   
   const [dataEntryForm, setDataEntryForm] = useState({
@@ -267,40 +269,33 @@ export default function HomeScreen() {
                 {/* Calendar Heatmap */}
                 <View style={styles.heatmapWrapper}>
 
-                {/* Month Labels */}
-                <View style={styles.monthRow}>
-                  {["Jan","Feb","Mar","Apr","May","Jun","Jul"].map((m,i)=>(
-                    <Text key={i} style={styles.monthLabel}>{m}</Text>
-                  ))}
-                </View>
+                  <View style={styles.heatmapRowWrapper}>
+                    
+                    {/* Days of Week Column */}
+                    <View style={styles.daysColumn}>
+                      {["M","T","W","T","F","S","S"].map((d,i)=>(
+                        <Text key={i} style={styles.dayLetter}>{d}</Text>
+                      ))}
+                    </View>
 
-                <View style={styles.heatmapRowWrapper}>
-                  
-                  {/* Days of Week Column */}
-                  <View style={styles.daysColumn}>
-                    {["M","T","W","T","F","S","S"].map((d,i)=>(
-                      <Text key={i} style={styles.dayLetter}>{d}</Text>
-                    ))}
-                  </View>
-
-                  {/* Heatmap Grid */}
-                  <View style={styles.gridWrapper}>
-                    {Array(7).fill(null).map((_, rowIndex) => (
-                      <View key={rowIndex} style={styles.gridRow}>
-                        {heatmapData.map((item, colIndex) => (
-                          <View
-                            key={colIndex}
-                            style={[
-                              styles.cell,
-                              item.percentage === 0 && styles.cellGrey,
-                              item.percentage > 0 && item.percentage < 50 && styles.cellYellow,
-                              item.percentage >= 50 && styles.cellGreen,
-                            ]}
-                          />
-                        ))}
-                      </View>
-                    ))}
-                  </View>
+                    {/* Heatmap Grid */}
+                    <View style={styles.gridWrapper}>
+                      {Array(7).fill(null).map((_, rowIndex) => (
+                        <View key={rowIndex} style={styles.gridRow}>
+                          {heatmapData.map((item, colIndex) => (
+                            <View
+                              key={colIndex}
+                              style={[
+                                styles.cell,
+                                item.percentage === 0 && styles.cellGrey,
+                                item.percentage > 0 && item.percentage < 50 && styles.cellYellow,
+                                item.percentage >= 80 && styles.cellGreen,
+                              ]}
+                            />
+                          ))}
+                        </View>
+                      ))}
+                    </View>
 
                 </View>
 
@@ -389,7 +384,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Gabarito-Medium',
     letterSpacing: -0.5,
-    color: '#333',
+    color: '#00000',
     marginBottom: 12,
     marginTop: -60,
   },
@@ -823,11 +818,10 @@ const styles = StyleSheet.create({
   heatmapWrapper: {
     marginTop: 16,
   },
-  
   monthRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    marginBottom: -5,
   },
   
   monthLabel: {
@@ -847,7 +841,7 @@ const styles = StyleSheet.create({
   dayLetter: {
     fontSize: 12,
     opacity: 0.7,
-    marginVertical: 6,
+    marginVertical: 3,
   },
   
   gridWrapper: {
@@ -857,13 +851,13 @@ const styles = StyleSheet.create({
   gridRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 3,
+    marginVertical: 2,
   },
   
   cell: {
-    width: 20,
-    height: 20,
-    borderRadius: 4,
+    width: 16,
+    height: 16,
+    borderRadius: 3,
   },
   
   cellGrey: { backgroundColor: '#cccccc' },
