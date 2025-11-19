@@ -37,6 +37,20 @@ export default function HomeScreen() {
     { percentage: 88 },
     { percentage: 88 },
   ];
+
+  const generateRandomHeatmap = (rows: number, cols: number) => {
+    return Array(rows)
+      .fill(null)
+      .map(() =>
+        Array(cols)
+          .fill(null)
+          .map(() => ({
+            percentage: Math.floor(Math.random() * 101), // 0 to 100%
+          }))
+      );
+  };
+  
+  const heatmapGrid = generateRandomHeatmap(7, 16); // 7 rows x 30 columns
   
   const [dataEntryForm, setDataEntryForm] = useState({
     parameter: '',
@@ -280,16 +294,17 @@ export default function HomeScreen() {
 
                     {/* Heatmap Grid */}
                     <View style={styles.gridWrapper}>
-                      {Array(7).fill(null).map((_, rowIndex) => (
+                      {heatmapGrid.map((row, rowIndex) => (
                         <View key={rowIndex} style={styles.gridRow}>
-                          {heatmapData.map((item, colIndex) => (
+                          {row.map((cell, colIndex) => (
                             <View
                               key={colIndex}
                               style={[
                                 styles.cell,
-                                item.percentage === 0 && styles.cellGrey,
-                                item.percentage > 0 && item.percentage < 50 && styles.cellYellow,
-                                item.percentage >= 80 && styles.cellGreen,
+                                cell.percentage === 0 && styles.cellGrey,
+                                cell.percentage > 0 && cell.percentage < 50 && styles.cellYellow,
+                                cell.percentage >= 50 && cell.percentage < 60 && styles.cellDarkGreen,
+                                cell.percentage >= 70 && styles.cellGreen,
                               ]}
                             />
                           ))}
@@ -845,23 +860,23 @@ const styles = StyleSheet.create({
   },
   
   gridWrapper: {
-    flex: 1,
+    marginTop: 16,
+    flexDirection: 'column',
   },
-  
   gridRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 2,
+    marginVertical: 2, // vertical spacing between rows
   },
-  
   cell: {
     width: 16,
     height: 16,
     borderRadius: 3,
+    marginRight: 2.6, // horizontal spacing between cells
   },
   
   cellGrey: { backgroundColor: '#cccccc' },
-  cellYellow: { backgroundColor: '#f4d03f' },
-  cellGreen: { backgroundColor: '#2ecc71' },
+  cellYellow: { backgroundColor: '#E6B342' },
+  cellGreen: { backgroundColor: '#00D06F' },
+  cellDarkGreen: { backgroundColor: '#0CA533' },
   
 });
