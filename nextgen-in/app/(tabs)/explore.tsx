@@ -7,6 +7,71 @@ import { useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
+
+// Request notification permissions
+async function requestNotificationPermissions() {
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  
+  if (existingStatus !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  
+  if (finalStatus !== 'granted') {
+    alert('Notification permissions not granted!');
+    return false;
+  }
+  
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+  
+  return true;
+}
+
+// Schedule a random notification
+async function scheduleRandomNotification(
+  title: string,
+  body: string,
+  minSeconds: number = 60,
+  maxSeconds: number = 3600
+) {
+  const randomDelay = Math.floor(Math.random() * (maxSeconds - minSeconds + 1)) + minSeconds;
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: body,
+      sound: true,
+      priority: Notifications.AndroidNotificationPriority.HIGH,
+    },
+    trigger: {
+      seconds: randomDelay,
+      repeats: false,
+    } as Notifications.TimeIntervalTriggerInput,
+  });
+  
+  console.log(`Notification scheduled in ${randomDelay} seconds`);
+}
+
 export default function HomeScreen() {
   const [fontsLoaded] = useFonts({
     'Gabarito-Regular': require('@/assets/fonts/Gabarito-Regular.ttf'),
@@ -79,6 +144,39 @@ export default function HomeScreen() {
     setTimeout(() => setShowDoneModal(true), 300);
     setTimeout(() => setShowDoneModal(false), 2000);
   };
+
+  useEffect(() => {
+    // Request permissions and schedule notifications
+    const setupNotifications = async () => {
+      const hasPermission = await requestNotificationPermissions();
+      
+      if (hasPermission) {
+        // Schedule random water quality alerts
+        scheduleRandomNotification(
+          "Water Quality Check",
+          "Time to check your water parameters",
+          300,  // 5 minutes minimum
+          1800  // 30 minutes maximum
+        );
+        
+        scheduleRandomNotification(
+          "pH Level Alert",
+          "Monitor your pH levels for optimal water health",
+          600,  // 10 minutes minimum
+          2400  // 40 minutes maximum
+        );
+        
+        scheduleRandomNotification(
+          "System Maintenance",
+          "Don't forget to review your water health score",
+          900,  // 15 minutes minimum
+          3600  // 60 minutes maximum
+        );
+      }
+    };
+    
+    setupNotifications();
+  }, []);
 
   if (!fontsLoaded) {
     return null;
@@ -247,21 +345,134 @@ export default function HomeScreen() {
             </View>
           </Modal>
 
-          {/* Success Modal */}
-          <Modal
-            visible={showSuccessModal}
-            transparent={true}
-            animationType="fade"
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.successModal}>
-                <View style={styles.successIconContainer}>
-                  <Text style={styles.successIcon}>✓</Text>
+            {/* Success Modal */}
+            <Modal
+              visible={showSuccessModal}
+              transparent={true}
+              animationType="fade"
+            >
+              <View style={styles.modalOverlay}>
+                <View style={styles.successModal}>
+                  <View style={styles.successIconContainer}>
+                    <Text style={styles.successIcon}>✓</Text>
+                  </View>
+                  <Text style={styles.successText}>Manual Chemical Release Successfull</Text>
                 </View>
-                <Text style={styles.successText}>Manual Chemical Release Successfull</Text>
               </View>
-            </View>
-          </Modal>
+            </Modal>
+
+            {/* PDF Modal */}
+            <Modal
+              visible={showPdfModal}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={() => setShowPdfModal(false)}
+            >
+              <View style={styles.modalOverlay}>
+                <View style={styles.pdfModal}>
+                  <View style={styles.pdfHeader}>
+                    <Text style={styles.pdfTitle}>Monthly Report</Text>
+                    <TouchableOpacity onPress={() => setShowPdfModal(false)}>
+                      <Text style={styles.closeButton}>✕</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Image
+                    source={require('@/assets/report/monthly-report.png')}
+                    style={styles.pdfImage}
+                    contentFit="contain"
+                  />
+                  <TouchableOpacity 
+                    style={styles.downloadButton}
+                    onPress={handleDownloadPdf}
+                  >
+                    <Text style={styles.downloadButtonText}>Download PDF</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            {/* Data Entry Modal */}
+            <Modal
+              visible={showDataEntryModal}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={() => setShowDataEntryModal(false)}
+            >
+              <View style={styles.modalOverlay}>
+                <View style={styles.dataEntryModal}>
+                  <View style={styles.dataEntryHeader}>
+                    <Text style={styles.dataEntryTitle}>Manual Data Entry</Text>
+                    <TouchableOpacity onPress={() => setShowDataEntryModal(false)}>
+                      <Text style={styles.closeButton}>✕</Text>
+                    </TouchableOpacity>
+                  </View>
+                  
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Parameter</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="e.g., pH Level, Temperature"
+                      value={dataEntryForm.parameter}
+                      onChangeText={(text) => setDataEntryForm({...dataEntryForm, parameter: text})}
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Value</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter value"
+                      value={dataEntryForm.value}
+                      onChangeText={(text) => setDataEntryForm({...dataEntryForm, value: text})}
+                      keyboardType="numeric"
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Date</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="DD/MM/YYYY"
+                      value={dataEntryForm.date}
+                      onChangeText={(text) => setDataEntryForm({...dataEntryForm, date: text})}
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Time</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="HH:MM"
+                      value={dataEntryForm.time}
+                      onChangeText={(text) => setDataEntryForm({...dataEntryForm, time: text})}
+                    />
+                  </View>
+
+                  <TouchableOpacity 
+                    style={styles.submitButton}
+                    onPress={handleDataEntry}
+                  >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            {/* Done Modal */}
+            <Modal
+              visible={showDoneModal}
+              transparent={true}
+              animationType="fade"
+            >
+              <View style={styles.modalOverlay}>
+                <View style={styles.successModal}>
+                  <View style={styles.successIconContainer}>
+                    <Text style={styles.successIcon}>✓</Text>
+                  </View>
+                  <Text style={styles.successText}>Data Entry Complete</Text>
+                </View>
+              </View>
+            </Modal>
 
             {/* Water Health Score Calendar */}
             <View style={styles.healthScoreCard}>
@@ -540,7 +751,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 24,
-    marginLeft: -6,
+    marginLeft: -11,
     gap: 6,
   },
   actionButton: {
