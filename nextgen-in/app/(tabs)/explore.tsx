@@ -140,7 +140,7 @@ export default function HomeScreen() {
             </View>
 
               <Image
-                source={{ uri: 'https://via.placeholder.com/40' }}
+                source={require('@/assets/images/stock-pfp.jpg')}
                 style={styles.profileImage}
               />
             </View>
