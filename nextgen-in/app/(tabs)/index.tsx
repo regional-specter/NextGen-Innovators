@@ -5,9 +5,6 @@ import { useFonts } from 'expo-font';
 import { Typography } from '@/styles/typography';
 import { useState } from 'react';
 
-import { Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 
 export default function HomeScreen() {
   const [fontsLoaded] = useFonts({
@@ -22,12 +19,6 @@ export default function HomeScreen() {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [showDataEntryModal, setShowDataEntryModal] = useState(false);
   const [showDoneModal, setShowDoneModal] = useState(false);
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date());
-  const [showParameterPicker, setShowParameterPicker] = useState(false);
   
   const [dataEntryForm, setDataEntryForm] = useState({
     parameter: '',
@@ -35,17 +26,6 @@ export default function HomeScreen() {
     date: '',
     time: ''
   });
-
-  const parameters = [
-    'pH Level',
-    'Temperature',
-    'Dissolved Oxygen',
-    'Turbidity',
-    'Salinity',
-    'Conductivity',
-    'Ammonia Level',
-    'Nitrate Level'
-  ];
 
   const handleAddUnit = (sector: string) => {
     setShowSectorModal(false);
@@ -63,34 +43,10 @@ export default function HomeScreen() {
     }, 1000);
   };
 
-  // Update the handleDataEntry function
   const handleDataEntry = () => {
     setShowDataEntryModal(false);
-    setShowDatePicker(false);  // Close date picker
-    setShowTimePicker(false);  // Close time picker
-    setShowParameterPicker(false);  // Close parameter picker
-    // Reset form
-    setDataEntryForm({
-      parameter: '',
-      value: '',
-      date: '',
-      time: ''
-    });
     setTimeout(() => setShowDoneModal(true), 300);
     setTimeout(() => setShowDoneModal(false), 2000);
-  };
-
-  const formatDate = (date: Date) => {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
-  
-  const formatTime = (date: Date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
   };
 
   if (!fontsLoaded) {
@@ -339,166 +295,56 @@ export default function HomeScreen() {
                   </TouchableOpacity>
                 </View>
                 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  {/* Parameter Dropdown */}
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Parameter</Text>
-                    <TouchableOpacity 
-                      style={styles.input}
-                      onPress={() => setShowParameterPicker(!showParameterPicker)}
-                    >
-                      <Text style={[
-                        styles.inputText,
-                        !dataEntryForm.parameter && styles.placeholderText
-                      ]}>
-                        {dataEntryForm.parameter || 'Select parameter'}
-                      </Text>
-                      <Text style={styles.dropdownIcon}>▼</Text>
-                    </TouchableOpacity>
-                    
-                    {showParameterPicker && (
-                      <View style={styles.pickerContainer}>
-                        <ScrollView style={styles.pickerScroll}>
-                          {parameters.map((param, index) => (
-                            <TouchableOpacity
-                              key={index}
-                              style={styles.pickerItem}
-                              onPress={() => {
-                                setDataEntryForm({...dataEntryForm, parameter: param});
-                                setShowParameterPicker(false);
-                              }}
-                            >
-                              <Text style={styles.pickerItemText}>{param}</Text>
-                            </TouchableOpacity>
-                          ))}
-                        </ScrollView>
-                      </View>
-                    )}
-                  </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Parameter</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="e.g., pH Level, Temperature"
+                    value={dataEntryForm.parameter}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, parameter: text})}
+                  />
+                </View>
 
-                  {/* Value Input */}
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Value</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Enter value"
-                      placeholderTextColor="#999"
-                      value={dataEntryForm.value}
-                      onChangeText={(text) => setDataEntryForm({...dataEntryForm, value: text})}
-                      keyboardType="decimal-pad"
-                    />
-                  </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Value</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter value"
+                    value={dataEntryForm.value}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, value: text})}
+                    keyboardType="numeric"
+                  />
+                </View>
 
-                  {/* Date Picker */}
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Date</Text>
-                    <TouchableOpacity 
-                      style={styles.input}
-                      onPress={() => setShowDatePicker(true)}
-                    >
-                      <Text style={[
-                        styles.inputText,
-                        !dataEntryForm.date && styles.placeholderText
-                      ]}>
-                        {dataEntryForm.date || 'Select date'}
-                      </Text>
-                      <Text style={styles.calendarIcon}>📅</Text>
-                    </TouchableOpacity>
-                  </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Date</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="DD/MM/YYYY"
+                    value={dataEntryForm.date}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, date: text})}
+                  />
+                </View>
 
-                  {/* Time Picker */}
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Time</Text>
-                    <TouchableOpacity 
-                      style={styles.input}
-                      onPress={() => setShowTimePicker(true)}
-                    >
-                      <Text style={[
-                        styles.inputText,
-                        !dataEntryForm.time && styles.placeholderText
-                      ]}>
-                        {dataEntryForm.time || 'Select time'}
-                      </Text>
-                      <Text style={styles.clockIcon}>🕐</Text>
-                    </TouchableOpacity>
-                  </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Time</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="HH:MM"
+                    value={dataEntryForm.time}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, time: text})}
+                  />
+                </View>
 
-                  <TouchableOpacity 
-                    style={styles.submitButton}
-                    onPress={handleDataEntry}
-                  >
-                    <Text style={styles.submitButtonText}>Submit</Text>
-                  </TouchableOpacity>
-                </ScrollView>
+                <TouchableOpacity 
+                  style={styles.submitButton}
+                  onPress={handleDataEntry}
+                >
+                  <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </Modal>
-
-          {/* Date Picker - OUTSIDE the modal */}
-          {showDatePicker && (
-            <Modal
-              transparent={true}
-              animationType="fade"
-              visible={showDatePicker}
-              onRequestClose={() => setShowDatePicker(false)}
-            >
-              <View style={styles.dateTimePickerOverlay}>
-                <View style={styles.dateTimePickerContainer}>
-                  <View style={styles.dateTimePickerHeader}>
-                    <Text style={styles.dateTimePickerTitle}>Select Date</Text>
-                    <TouchableOpacity onPress={() => setShowDatePicker(false)}>
-                      <Text style={styles.dateTimePickerDone}>Done</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <DateTimePicker
-                    value={selectedDate}
-                    mode="date"
-                    display="spinner"
-                    onChange={(event, date) => {
-                      if (date) {
-                        setSelectedDate(date);
-                        setDataEntryForm({...dataEntryForm, date: formatDate(date)});
-                      }
-                    }}
-                    textColor="#000"
-                  />
-                </View>
-              </View>
-            </Modal>
-          )}
-
-          {/* Time Picker - OUTSIDE the modal */}
-          {showTimePicker && (
-            <Modal
-              transparent={true}
-              animationType="fade"
-              visible={showTimePicker}
-              onRequestClose={() => setShowTimePicker(false)}
-            >
-              <View style={styles.dateTimePickerOverlay}>
-                <View style={styles.dateTimePickerContainer}>
-                  <View style={styles.dateTimePickerHeader}>
-                    <Text style={styles.dateTimePickerTitle}>Select Time</Text>
-                    <TouchableOpacity onPress={() => setShowTimePicker(false)}>
-                      <Text style={styles.dateTimePickerDone}>Done</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <DateTimePicker
-                    value={selectedTime}
-                    mode="time"
-                    display="spinner"
-                    onChange={(event, time) => {
-                      if (time) {
-                        setSelectedTime(time);
-                        setDataEntryForm({...dataEntryForm, time: formatTime(time)});
-                      }
-                    }}
-                    textColor="#000"
-                  />
-                </View>
-              </View>
-            </Modal>
-          )}
 
           {/* Done Modal */}
           <Modal
@@ -1085,9 +931,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Gabarito-Regular',
     color: '#000',
-    flexDirection: 'row',  // Add this
-    alignItems: 'center',  // Add this
-    justifyContent: 'space-between',  // Add this
   },
   submitButton: {
     width: '100%',
@@ -1102,81 +945,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Gabarito-SemiBold',
     color: '#fff',
-  },
-  inputText: {
-    fontSize: 15,
-    fontFamily: 'Gabarito-Regular',
-    color: '#000',
-    flex: 1,
-  },
-  placeholderText: {
-    color: '#999',
-  },
-  dropdownIcon: {
-    fontSize: 12,
-    color: '#666',
-  },
-  calendarIcon: {
-    fontSize: 18,
-  },
-  clockIcon: {
-    fontSize: 18,
-  },
-  pickerContainer: {
-    marginTop: 8,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#DEDEDE',
-    borderRadius: 8,
-    maxHeight: 200,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  pickerScroll: {
-    maxHeight: 200,
-  },
-  pickerItem: {
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
-  },
-  pickerItemText: {
-    fontSize: 15,
-    fontFamily: 'Gabarito-Regular',
-    color: '#000',
-  },
-  dateTimePickerOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
-  },
-  dateTimePickerContainer: {
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    paddingBottom: 20,
-  },
-  dateTimePickerHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#DEDEDE',
-  },
-  dateTimePickerTitle: {
-    fontSize: 18,
-    fontFamily: 'Gabarito-SemiBold',
-    color: '#000',
-  },
-  dateTimePickerDone: {
-    fontSize: 16,
-    fontFamily: 'Gabarito-SemiBold',
-    color: '#4A90E2',
   },
 });
