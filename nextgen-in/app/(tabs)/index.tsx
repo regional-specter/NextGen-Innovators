@@ -4,7 +4,66 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { Typography } from '@/styles/typography';
 import { useState } from 'react';
+import { Animated, Easing } from 'react-native';
+import { useEffect, useRef } from 'react';
 
+// Define AnimatedActivityCard component outside main component
+type AnimatedActivityCardProps = {
+  activity: {
+    title: string;
+    date: string;
+    change: string;
+    isNegative?: boolean;
+  };
+  index: number;
+};
+
+const AnimatedActivityCard = ({ activity, index }: AnimatedActivityCardProps) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        delay: index * 1800, // Stagger delay: 150ms between each card
+        useNativeDriver: true,
+        easing: Easing.out(Easing.ease),
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        delay: index * 150,
+        useNativeDriver: true,
+        easing: Easing.out(Easing.ease),
+      }),
+    ]).start();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[
+        styles.activityItem,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        },
+      ]}
+    >
+      <View style={styles.activityTextContainer}>
+        <Text style={styles.activityTitle}>{activity.title}</Text>
+        <Text style={styles.activityDate}>{activity.date}</Text>
+      </View>
+      <View style={[
+        styles.activityBadge,
+        activity.isNegative && styles.activityBadgeNegative
+      ]}>
+        <Text style={styles.badgeText}>{activity.change}</Text>
+      </View>
+    </Animated.View>
+  );
+};
 
 export default function HomeScreen() {
   const [fontsLoaded] = useFonts({
@@ -37,7 +96,6 @@ export default function HomeScreen() {
     setTimeout(() => {
       setShowPdfModal(false);
       setTimeout(() => {
-        // Show download success message
         alert('PDF Downloaded');
       }, 300);
     }, 1000);
@@ -438,45 +496,38 @@ export default function HomeScreen() {
           <View style={styles.recentSection}>
             <Text style={styles.sectionHeading}>Recent Activities</Text>
             
-            <View style={styles.activityItem}>
-              <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Dissolved Oxygen Increase by 14%</Text>
-                <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
-              </View>
-              <View style={styles.activityBadge}>
-                <Text style={styles.badgeText}>📈 13.74%</Text>
-              </View>
-            </View>
-
-            <View style={styles.activityItem}>
-              <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Water Turbidity levels Increase</Text>
-                <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
-              </View>
-              <View style={styles.activityBadge}>
-                <Text style={styles.badgeText}>📈 13.74%</Text>
-              </View>
-            </View>
-
-            <View style={styles.activityItem}>
-              <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Water pH Levels Decrease below stable</Text>
-                <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
-              </View>
-              <View style={[styles.activityBadge, styles.activityBadgeNegative]}>
-                <Text style={styles.badgeText}>📉 27.54%</Text>
-              </View>
-            </View>
-
-            <View style={styles.activityItem}>
-              <View style={styles.activityTextContainer}>
-                <Text style={styles.activityTitle}>Water Salinity Increase</Text>
-                <Text style={styles.activityDate}>Jun 24, 2025 - 22:34</Text>
-              </View>
-              <View style={styles.activityBadge}>
-                <Text style={styles.badgeText}>📈 13.74%</Text>
-              </View>
-            </View>
+            {[
+              {
+                title: "Dissolved Oxygen Increase by 14%",
+                date: "Jun 24, 2025 - 22:34",
+                change: "📈 13.74%",
+                isNegative: false
+              },
+              {
+                title: "Water Turbidity levels Increase",
+                date: "Jun 24, 2025 - 22:34",
+                change: "📈 13.74%",
+                isNegative: false
+              },
+              {
+                title: "Water pH Levels Decrease below stable",
+                date: "Jun 24, 2025 - 22:34",
+                change: "📉 27.54%",
+                isNegative: true
+              },
+              {
+                title: "Water Salinity Increase",
+                date: "Jun 24, 2025 - 22:34",
+                change: "📈 13.74%",
+                isNegative: false
+              }
+            ].map((activity, index) => (
+              <AnimatedActivityCard
+                key={index}
+                activity={activity}
+                index={index}
+              />
+            ))}
           </View>
         </ScrollView>
       </LinearGradient>
@@ -503,7 +554,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 70,
     resizeMode: 'contain',
-    alignSelf: 'center', // centers it without extra spacing
+    alignSelf: 'center',
   },
   topBarRight: {
     flexDirection: 'row',
@@ -650,7 +701,6 @@ const styles = StyleSheet.create({
     opacity: 0.75
   },
   badgeText: {
-    ...Typography.medium,
     fontSize: 9,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
