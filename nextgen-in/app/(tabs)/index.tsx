@@ -1,8 +1,9 @@
 import { Image } from 'expo-image';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { Typography } from '@/styles/typography';
+import { useState } from 'react';
 
 
 export default function HomeScreen() {
@@ -12,6 +13,41 @@ export default function HomeScreen() {
     'Gabarito-SemiBold': require('@/assets/fonts/Gabarito-SemiBold.ttf'),
     'Gabarito-Bold': require('@/assets/fonts/Gabarito-Bold.ttf'),
   });
+
+  const [showSectorModal, setShowSectorModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [showDataEntryModal, setShowDataEntryModal] = useState(false);
+  const [showDoneModal, setShowDoneModal] = useState(false);
+  
+  const [dataEntryForm, setDataEntryForm] = useState({
+    parameter: '',
+    value: '',
+    date: '',
+    time: ''
+  });
+
+  const handleAddUnit = (sector: string) => {
+    setShowSectorModal(false);
+    setTimeout(() => setShowSuccessModal(true), 300);
+    setTimeout(() => setShowSuccessModal(false), 2000);
+  };
+
+  const handleDownloadPdf = () => {
+    setTimeout(() => {
+      setShowPdfModal(false);
+      setTimeout(() => {
+        // Show download success message
+        alert('PDF Downloaded');
+      }, 300);
+    }, 1000);
+  };
+
+  const handleDataEntry = () => {
+    setShowDataEntryModal(false);
+    setTimeout(() => setShowDoneModal(true), 300);
+    setTimeout(() => setShowDoneModal(false), 2000);
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -101,8 +137,11 @@ export default function HomeScreen() {
 
           {/* Action Buttons */}
           <View style={styles.buttonGroup}>
-
-            <View style={styles.actionButton}>
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => setShowSectorModal(true)}
+              activeOpacity={0.7}
+            >
               <View style={styles.buttonIconContainer}>
                 <Image
                   source={require('@/assets/icons/add.svg')}
@@ -115,9 +154,13 @@ export default function HomeScreen() {
                 />
               </View>
               <Text style={styles.buttonLabel}>Add new BioTrace Unit</Text>
-            </View>
+            </TouchableOpacity>
 
-            <View style={styles.actionButton}>
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => setShowPdfModal(true)}
+              activeOpacity={0.7}
+            >
               <View style={styles.buttonIconContainer}>
                 <Image
                   source={require('@/assets/icons/import-download.svg')}
@@ -130,9 +173,13 @@ export default function HomeScreen() {
                 />
               </View>
               <Text style={styles.buttonLabel}>Get Monthly Report</Text>
-            </View>
+            </TouchableOpacity>
 
-            <View style={styles.actionButton}>
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => setShowDataEntryModal(true)}
+              activeOpacity={0.7}
+            >
               <View style={styles.buttonIconContainer}>
                 <Image
                   source={require('@/assets/icons/folder-add.svg')}
@@ -145,9 +192,175 @@ export default function HomeScreen() {
                 />
               </View>
               <Text style={styles.buttonLabel}>Manual data entry</Text>
-            </View>
-
+            </TouchableOpacity>
           </View>
+
+          {/* Sector Selection Modal */}
+          <Modal
+            visible={showSectorModal}
+            transparent={true}
+            animationType="fade"
+            onRequestClose={() => setShowSectorModal(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.sectorModal}>
+                <Text style={styles.sectorModalTitle}>Select Sector</Text>
+                <TouchableOpacity 
+                  style={styles.sectorButton}
+                  onPress={() => handleAddUnit('Sector A')}
+                >
+                  <Text style={styles.sectorButtonText}>Sector A</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.sectorButton}
+                  onPress={() => handleAddUnit('Sector B')}
+                >
+                  <Text style={styles.sectorButtonText}>Sector B</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.sectorButton}
+                  onPress={() => handleAddUnit('Sector C')}
+                >
+                  <Text style={styles.sectorButtonText}>Sector C</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.cancelButton}
+                  onPress={() => setShowSectorModal(false)}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          {/* Success Modal */}
+          <Modal
+            visible={showSuccessModal}
+            transparent={true}
+            animationType="fade"
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.successModal}>
+                <View style={styles.successIconContainer}>
+                  <Text style={styles.successIcon}>✓</Text>
+                </View>
+                <Text style={styles.successText}>New BioTrace Unit added</Text>
+              </View>
+            </View>
+          </Modal>
+
+          {/* PDF Modal */}
+          <Modal
+            visible={showPdfModal}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={() => setShowPdfModal(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.pdfModal}>
+                <View style={styles.pdfHeader}>
+                  <Text style={styles.pdfTitle}>Monthly Report</Text>
+                  <TouchableOpacity onPress={() => setShowPdfModal(false)}>
+                    <Text style={styles.closeButton}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+                <Image
+                  source={require('@/assets/report/monthly-report.png')}
+                  style={styles.pdfImage}
+                  contentFit="contain"
+                />
+                <TouchableOpacity 
+                  style={styles.downloadButton}
+                  onPress={handleDownloadPdf}
+                >
+                  <Text style={styles.downloadButtonText}>Download PDF</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          {/* Data Entry Modal */}
+          <Modal
+            visible={showDataEntryModal}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={() => setShowDataEntryModal(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.dataEntryModal}>
+                <View style={styles.dataEntryHeader}>
+                  <Text style={styles.dataEntryTitle}>Manual Data Entry</Text>
+                  <TouchableOpacity onPress={() => setShowDataEntryModal(false)}>
+                    <Text style={styles.closeButton}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+                
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Parameter</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="e.g., pH Level, Temperature"
+                    value={dataEntryForm.parameter}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, parameter: text})}
+                  />
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Value</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter value"
+                    value={dataEntryForm.value}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, value: text})}
+                    keyboardType="numeric"
+                  />
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Date</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="DD/MM/YYYY"
+                    value={dataEntryForm.date}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, date: text})}
+                  />
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Time</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="HH:MM"
+                    value={dataEntryForm.time}
+                    onChangeText={(text) => setDataEntryForm({...dataEntryForm, time: text})}
+                  />
+                </View>
+
+                <TouchableOpacity 
+                  style={styles.submitButton}
+                  onPress={handleDataEntry}
+                >
+                  <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          {/* Done Modal */}
+          <Modal
+            visible={showDoneModal}
+            transparent={true}
+            animationType="fade"
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.successModal}>
+                <View style={styles.successIconContainer}>
+                  <Text style={styles.successIcon}>✓</Text>
+                </View>
+                <Text style={styles.successText}>Data Entry Complete</Text>
+              </View>
+            </View>
+          </Modal>
 
 
           {/* Water Health Score Calendar */}
@@ -557,5 +770,180 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Gabarito-Medium',
     color: '#666',
+  },
+
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  // Sector Selection Modal
+  sectorModal: {
+    width: 280,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+  },
+  sectorModalTitle: {
+    fontSize: 20,
+    fontFamily: 'Gabarito-SemiBold',
+    color: '#000',
+    marginBottom: 20,
+  },
+  sectorButton: {
+    width: '100%',
+    height: 48,
+    backgroundColor: '#4A90E2',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectorButtonText: {
+    fontSize: 16,
+    fontFamily: 'Gabarito-Medium',
+    color: '#fff',
+  },
+  cancelButton: {
+    marginTop: 8,
+    paddingVertical: 8,
+  },
+  cancelButtonText: {
+    fontSize: 14,
+    fontFamily: 'Gabarito-Medium',
+    color: '#666',
+  },
+
+  // Success Modal
+  successModal: {
+    width: 260,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+  },
+  successIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#00D06F',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  successIcon: {
+    fontSize: 48,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  successText: {
+    fontSize: 18,
+    fontFamily: 'Gabarito-SemiBold',
+    color: '#000',
+    textAlign: 'center',
+  },
+
+  // PDF Modal
+  pdfModal: {
+    width: '90%',
+    height: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+  },
+  pdfHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  pdfTitle: {
+    fontSize: 20,
+    fontFamily: 'Gabarito-SemiBold',
+    color: '#000',
+  },
+  closeButton: {
+    fontSize: 28,
+    color: '#666',
+    fontWeight: '300',
+  },
+  pdfImage: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  downloadButton: {
+    width: '100%',
+    height: 48,
+    backgroundColor: '#4A90E2',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  downloadButtonText: {
+    fontSize: 16,
+    fontFamily: 'Gabarito-SemiBold',
+    color: '#fff',
+  },
+
+  // Data Entry Modal
+  dataEntryModal: {
+    width: '90%',
+    maxHeight: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+  },
+  dataEntryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  dataEntryTitle: {
+    fontSize: 20,
+    fontFamily: 'Gabarito-SemiBold',
+    color: '#000',
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontSize: 14,
+    fontFamily: 'Gabarito-Medium',
+    color: '#333',
+    marginBottom: 8,
+  },
+  input: {
+    width: '100%',
+    height: 48,
+    backgroundColor: '#FCFCFC',
+    borderWidth: 1,
+    borderColor: '#DEDEDE',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    fontSize: 15,
+    fontFamily: 'Gabarito-Regular',
+    color: '#000',
+  },
+  submitButton: {
+    width: '100%',
+    height: 48,
+    backgroundColor: '#4A90E2',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  submitButtonText: {
+    fontSize: 16,
+    fontFamily: 'Gabarito-SemiBold',
+    color: '#fff',
   },
 });
