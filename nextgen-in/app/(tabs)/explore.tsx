@@ -98,56 +98,170 @@ export default function HomeScreen() {
         >
           {/* Top Bar */}
           <View style={styles.topBar}>
-            <Image
-              source={require('@/assets/images/Black-Logo.png')}
-              style={styles.logo}
-            />
-            <View style={styles.topBarRight}>
-            <View style={{
-              flexDirection: 'row',
-              gap: 17,
-              padding: 8,
-            }}>
-
-              <View style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <Image
-                  source={require('@/assets/icons/notif-bell-blk.svg')}
-                  style={{
-                    width: 27,
-                    height: 27,
-                    resizeMode: 'contain',
-                  }}
-                />
-              </View>
-
-              <View style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <Image
-                  source={require('@/assets/icons/question-blk.svg')}
-                  style={{
-                    width: 27,
-                    height: 27,
-                    resizeMode: 'contain',
-                  }}
-                />
-              </View>
-
-            </View>
-
               <Image
-                source={require('@/assets/images/stock-pfp.jpg')}
-                style={styles.profileImage}
+                source={require('@/assets/images/Black-Logo.png')}
+                style={styles.logo}
               />
+              <View style={styles.topBarRight}>
+              <View style={{
+                flexDirection: 'row',
+                gap: 17,
+                padding: 8,
+              }}>
+
+                <View style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <Image
+                    source={require('@/assets/icons/notif-bell-blk.svg')}
+                    style={{
+                      width: 27,
+                      height: 27,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+
+                <View style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <Image
+                    source={require('@/assets/icons/question-blk.svg')}
+                    style={{
+                      width: 27,
+                      height: 27,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+
+              </View>
+
+                <Image
+                  source={require('@/assets/images/stock-pfp.jpg')}
+                  style={styles.profileImage}
+                />
+              </View>
             </View>
-          </View>
           
-          <View style={styles.contentContainer}>
-            <Text style={styles.statusHeading}>Good Morning, Mohammed 👋🏼</Text>
+            {/* Manual Action Buttons */}
+            <View style={styles.contentContainer}>
+              <Text style={styles.statusHeading}>Good Morning, Mohammed 👋🏼</Text>
+
+              <View style={styles.buttonGroup}>
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={() => setShowSectorModal(true)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.buttonIconContainer}>
+                  <Image
+                    source={require('@/assets/icons/add.svg')}
+                    style={{
+                      width: 23,
+                      height: 23,
+                      marginTop: 5,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+                <Text style={styles.buttonLabel}>Manual Chemical Release</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={() => setShowPdfModal(true)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.buttonIconContainer}>
+                  <Image
+                    source={require('@/assets/icons/import-download.svg')}
+                    style={{
+                      width: 23,
+                      height: 23,
+                      marginTop: 5,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+                <Text style={styles.buttonLabel}>Get Monthly Report</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={() => setShowDataEntryModal(true)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.buttonIconContainer}>
+                  <Image
+                    source={require('@/assets/icons/folder-add.svg')}
+                    style={{
+                      width: 23,
+                      height: 23,
+                      marginTop: 5,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+                <Text style={styles.buttonLabel}>Manual data entry</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Sector Selection Modal */}
+          <Modal
+            visible={showSectorModal}
+            transparent={true}
+            animationType="fade"
+            onRequestClose={() => setShowSectorModal(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.sectorModal}>
+                <Text style={styles.sectorModalTitle}>Select Sector</Text>
+                <TouchableOpacity 
+                  style={styles.sectorButton}
+                  onPress={() => handleAddUnit('Sector A')}
+                >
+                  <Text style={styles.sectorButtonText}>Dissolved Oxygen</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.sectorButton}
+                  onPress={() => handleAddUnit('Sector B')}
+                >
+                  <Text style={styles.sectorButtonText}>pH</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.sectorButton}
+                  onPress={() => handleAddUnit('Sector C')}
+                >
+                  <Text style={styles.sectorButtonText}>Nitrates</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.cancelButton}
+                  onPress={() => setShowSectorModal(false)}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          {/* Success Modal */}
+          <Modal
+            visible={showSuccessModal}
+            transparent={true}
+            animationType="fade"
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.successModal}>
+                <View style={styles.successIconContainer}>
+                  <Text style={styles.successIcon}>✓</Text>
+                </View>
+                <Text style={styles.successText}>Manual Chemical Release Successfull</Text>
+              </View>
+            </View>
+          </Modal>
 
             {/* Water Health Score Calendar */}
             <View style={styles.healthScoreCard}>
@@ -446,7 +560,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   buttonLabel: {
-    fontSize: 10,
+    fontSize: 9,
     letterSpacing: -0.3,
     fontFamily: 'Gabarito-Medium',
     color: '#333',

@@ -211,7 +211,7 @@ export default function HomeScreen() {
                   }}
                 />
               </View>
-              <Text style={styles.buttonLabel}>Add new BioTrace Unit</Text>
+              <Text style={styles.buttonLabel}>Add new LilyGuard Unit</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
