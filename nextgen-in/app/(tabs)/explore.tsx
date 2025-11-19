@@ -51,7 +51,7 @@ async function requestNotificationPermissions() {
 async function scheduleRandomNotification(
   title: string,
   body: string,
-  minSeconds: number = 60,
+  minSeconds: number = 80,
   maxSeconds: number = 3600
 ) {
   const randomDelay = Math.floor(Math.random() * (maxSeconds - minSeconds + 1)) + minSeconds;
