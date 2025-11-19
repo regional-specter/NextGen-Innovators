@@ -20,6 +20,21 @@ export default function HomeScreen() {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [showDataEntryModal, setShowDataEntryModal] = useState(false);
   const [showDoneModal, setShowDoneModal] = useState(false);
+
+  const heatmapData = [
+    { percentage: 91 },
+    { percentage: 49 },
+    { percentage: 88 },
+    { percentage: 96 },
+    { percentage: 89 },
+    { percentage: 88 },
+    { percentage: 91 },
+    { percentage: 90 },
+    { percentage: 95 },
+    { percentage: 97 },
+    { percentage: 88 },
+    { percentage: 88 },
+  ];
   
   const [dataEntryForm, setDataEntryForm] = useState({
     parameter: '',
@@ -61,141 +76,240 @@ export default function HomeScreen() {
         end={{ x: 1, y: 1 }}
         style={styles.gradientBackground}
       >
-        {/* Top Bar */}
-        <View style={styles.topBar}>
-          <Image
-            source={require('@/assets/images/Black-Logo.png')}
-            style={styles.logo}
-          />
-          <View style={styles.topBarRight}>
-          <View style={{
-            flexDirection: 'row',
-            gap: 17,
-            padding: 8,
-          }}>
-
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-              <Image
-                source={require('@/assets/icons/notif-bell-blk.svg')}
-                style={{
-                  width: 27,
-                  height: 27,
-                  resizeMode: 'contain',
-                }}
-              />
-            </View>
-
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-              <Image
-                source={require('@/assets/icons/question-blk.svg')}
-                style={{
-                  width: 27,
-                  height: 27,
-                  resizeMode: 'contain',
-                }}
-              />
-            </View>
-
-          </View>
-
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Top Bar */}
+          <View style={styles.topBar}>
             <Image
-              source={{ uri: 'https://via.placeholder.com/40' }}
-              style={styles.profileImage}
+              source={require('@/assets/images/Black-Logo.png')}
+              style={styles.logo}
             />
+            <View style={styles.topBarRight}>
+            <View style={{
+              flexDirection: 'row',
+              gap: 17,
+              padding: 8,
+            }}>
+
+              <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                <Image
+                  source={require('@/assets/icons/notif-bell-blk.svg')}
+                  style={{
+                    width: 27,
+                    height: 27,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </View>
+
+              <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                <Image
+                  source={require('@/assets/icons/question-blk.svg')}
+                  style={{
+                    width: 27,
+                    height: 27,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </View>
+
+            </View>
+
+              <Image
+                source={{ uri: 'https://via.placeholder.com/40' }}
+                style={styles.profileImage}
+              />
+            </View>
           </View>
-        </View>
-        
-        <View style={styles.contentContainer}>
+          
+          <View style={styles.contentContainer}>
             <Text style={styles.statusHeading}>Good Morning, Mohammed 👋🏼</Text>
 
-          {/* Water Health Score Calendar */}
-          <View style={styles.healthScoreCard}>
-            <View style={styles.healthScoreHeader}>
-              <View style={styles.blueCircle}>
-                <View style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                    <Image
-                      source={require('@/assets/icons/water-droplet.svg')}
-                      style={{
-                        width: 29,
-                        height: 29,
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </View>
-              </View>
-              <View style={styles.healthScoreTextContainer}>
-                <Text style={styles.healthScoreTitle}>Water Health Score</Text>
-                <Text style={styles.healthScoreSubtitle}>Goal : 95% Health Score | 3 times a day</Text>
-              </View>
-            </View>
-
-            <View style={styles.statsRow}>
-              <View style={styles.statItem}>
-                <Text style={styles.statValue}>133 <Text style={styles.statUnit}>Days</Text></Text>
-                <Text style={styles.statLabel}>Best Score</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statValue}>78% <Text style={styles.statUnit}>WHI</Text></Text>
-                <Text style={styles.statLabel}>Average Score</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statValue}>+18% <Text style={styles.statUnit}>WHI</Text></Text>
-                <Text style={styles.statLabel}>Aggregate Trend</Text>
-              </View>
-            </View>
-
-            <View style={styles.weekCalendar}>
-              {[
-                { day: 'Mon', percentage: 91 },
-                { day: 'Tue', percentage: 49 },
-                { day: 'Wed', percentage: 97 },
-                { day: 'Thu', percentage: 96 },
-                { day: 'Fri', percentage: 89, date: 14 },
-                { day: 'Sat', percentage: 91, date: 15 },
-                { day: 'Sun', percentage: 90, date: 16 },
-                { day: 'Mon', percentage: 95, date: 17 },
-                { day: 'Tue', percentage: 88, date: 18 },
-                { day: 'Wed', percentage: 88, date: 19 },
-                { day: 'Thu', percentage: 0, date: 20 },
-                { day: 'Fri', percentage: 0, date: 21 },
-                { day: 'Sat', percentage: 0, date: 22 },
-                { day: 'Sun', percentage: 0, date: 23 },
-                { day: 'Mon', percentage: 0, date: 24 },
-                { day: 'Tue', percentage: 0, date: 25 },
-                { day: 'Wed', percentage: 0, date: 26 },
-                { day: 'Thu', percentage: 0, date: 27 },
-              ].map((item, index) => (
-                <View key={index} style={styles.dayItem}>
-                  <Text style={styles.dayLabel}>{item.day}</Text>
-                  <View style={[
-                    styles.dayCircle,
-                    item.percentage === 0 && styles.dayCircleGrey,
-                    item.percentage > 0 && item.percentage < 50 && styles.dayCircleYellow,
-                    item.percentage >= 50 && styles.dayCircleGreen,
-                  ]}>
-                    {item.percentage === 0 ? (
-                      <Text style={styles.dateNumber}>{item.date}</Text>
-                    ) : (
-                      <Text style={styles.checkIcon}>✓</Text>
-                    )}
-                  </View>
-                  <Text style={styles.percentageLabel}>
-                    {item.percentage === 0 ? '—' : `${item.percentage}%`}
-                  </Text>
+            {/* Water Health Score Calendar */}
+            <View style={styles.healthScoreCard}>
+              <View style={styles.healthScoreHeader}>
+                <View style={styles.blueCircle}>
+                  <View style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                      <Image
+                        source={require('@/assets/icons/water-droplet.svg')}
+                        style={{
+                          width: 29,
+                          height: 29,
+                          resizeMode: 'contain',
+                        }}
+                      />
+                    </View>
                 </View>
-              ))}
+                <View style={styles.healthScoreTextContainer}>
+                  <Text style={styles.healthScoreTitle}>Water Health Score</Text>
+                  <Text style={styles.healthScoreSubtitle}>Goal : 95% Health Score | 3 times a day</Text>
+                </View>
+              </View>
+
+              <View style={styles.statsRow}>
+                <View style={styles.statItem}>
+                  <Text style={styles.statValue}>133 <Text style={styles.statUnit}>Days</Text></Text>
+                  <Text style={styles.statLabel}>Best Score</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statValue}>78% <Text style={styles.statUnit}>WHI</Text></Text>
+                  <Text style={styles.statLabel}>Average Score</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statValue}>+18% <Text style={styles.statUnit}>WHI</Text></Text>
+                  <Text style={styles.statLabel}>Aggregate Trend</Text>
+                </View>
+              </View>
+
+              <View style={styles.weekCalendar}>
+                {[
+                  { day: 'Mon', percentage: 91 },
+                  { day: 'Tue', percentage: 49 },
+                  { day: 'Wed', percentage: 97 },
+                  { day: 'Thu', percentage: 96 },
+                  { day: 'Fri', percentage: 89, date: 14 },
+                  { day: 'Sat', percentage: 91, date: 15 },
+                  { day: 'Sun', percentage: 90, date: 16 },
+                  { day: 'Mon', percentage: 95, date: 17 },
+                  { day: 'Tue', percentage: 88, date: 18 },
+                  { day: 'Wed', percentage: 88, date: 19 },
+                  { day: 'Thu', percentage: 0, date: 20 },
+                  { day: 'Fri', percentage: 0, date: 21 },
+                  { day: 'Sat', percentage: 0, date: 22 },
+                  { day: 'Sun', percentage: 0, date: 23 },
+                  { day: 'Mon', percentage: 0, date: 24 },
+                  { day: 'Tue', percentage: 0, date: 25 },
+                  { day: 'Wed', percentage: 0, date: 26 },
+                  { day: 'Thu', percentage: 0, date: 27 },
+                ].map((item, index) => (
+                  <View key={index} style={styles.dayItem}>
+                    <Text style={styles.dayLabel}>{item.day}</Text>
+                    <View style={[
+                      styles.dayCircle,
+                      item.percentage === 0 && styles.dayCircleGrey,
+                      item.percentage > 0 && item.percentage < 50 && styles.dayCircleYellow,
+                      item.percentage >= 50 && styles.dayCircleGreen,
+                    ]}>
+                      {item.percentage === 0 ? (
+                        <Text style={styles.dateNumber}>{item.date}</Text>
+                      ) : (
+                        <Text style={styles.checkIcon}>✓</Text>
+                      )}
+                    </View>
+                    <Text style={styles.percentageLabel}>
+                      {item.percentage === 0 ? '—' : `${item.percentage}%`}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+
+            {/* pH Calendar Heatmap */}
+            <View style={styles.healthScoreCard}>
+              <View style={styles.healthScoreHeader}>
+                <View style={styles.blueCircle}>
+                  <View style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                      <Image
+                        source={require('@/assets/icons/water-droplet.svg')}
+                        style={{
+                          width: 29,
+                          height: 29,
+                          resizeMode: 'contain',
+                        }}
+                      />
+                    </View>
+                </View>
+                <View style={styles.healthScoreTextContainer}>
+                  <Text style={styles.healthScoreTitle}>Water pH Score</Text>
+                  <Text style={styles.healthScoreSubtitle}>Goal : +7 pH Score | 5 times a day </Text>
+                </View>
+              </View>
+
+              <View style={styles.statsRow}>
+                <View style={styles.statItem}>
+                  <Text style={styles.statValue}>245 <Text style={styles.statUnit}>Days</Text></Text>
+                  <Text style={styles.statLabel}>Best Score</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statValue}>6-7 <Text style={styles.statUnit}>pH</Text></Text>
+                  <Text style={styles.statLabel}>Average Score</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statValue}>7-8 <Text style={styles.statUnit}>pH</Text></Text>
+                  <Text style={styles.statLabel}>Aggregate Trend</Text>
+                </View>
+              </View>
+
+              {/* pH Calendar Heatmap */}
+              <View style={styles.heatmapContainer}>
+
+                {/* Month Row */}
+                <View style={styles.monthRow}>
+                  {['Jan','Feb','Mar','Apr','May','Jun','Jul'].map((m,i)=>(
+                    <Text key={i} style={styles.monthLabel}>{m}</Text>
+                  ))}
+                </View>
+
+                {/* Calendar Heatmap */}
+                <View style={styles.heatmapWrapper}>
+
+                {/* Month Labels */}
+                <View style={styles.monthRow}>
+                  {["Jan","Feb","Mar","Apr","May","Jun","Jul"].map((m,i)=>(
+                    <Text key={i} style={styles.monthLabel}>{m}</Text>
+                  ))}
+                </View>
+
+                <View style={styles.heatmapRowWrapper}>
+                  
+                  {/* Days of Week Column */}
+                  <View style={styles.daysColumn}>
+                    {["M","T","W","T","F","S","S"].map((d,i)=>(
+                      <Text key={i} style={styles.dayLetter}>{d}</Text>
+                    ))}
+                  </View>
+
+                  {/* Heatmap Grid */}
+                  <View style={styles.gridWrapper}>
+                    {Array(7).fill(null).map((_, rowIndex) => (
+                      <View key={rowIndex} style={styles.gridRow}>
+                        {heatmapData.map((item, colIndex) => (
+                          <View
+                            key={colIndex}
+                            style={[
+                              styles.cell,
+                              item.percentage === 0 && styles.cellGrey,
+                              item.percentage > 0 && item.percentage < 50 && styles.cellYellow,
+                              item.percentage >= 50 && styles.cellGreen,
+                            ]}
+                          />
+                        ))}
+                      </View>
+                    ))}
+                  </View>
+
+                </View>
+
+                </View>
+
+              </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
         
       </LinearGradient>
     </View>
@@ -205,13 +319,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   contentContainer: {
     width: '100%',
-    paddingHorizontal: 22,
-    paddingTop: 10,
+    paddingHorizontal: 12,
+    paddingTop: 80,
   
     // prevents stretched UI
     alignSelf: 'center',
     maxWidth: 650,
-    marginTop: -30
+    marginTop: -40
   },
   container: {
     flex: 1,
@@ -277,6 +391,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     color: '#333',
     marginBottom: 12,
+    marginTop: -60,
   },
   infoIcon: {
     marginLeft: 6,
@@ -442,7 +557,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   statUnit: {
-    fontSize: 17,
+    fontSize: 21,
     letterSpacing: -0.2,
     fontFamily: 'Gabarito-Medium',
     color: '#000',
@@ -455,8 +570,8 @@ const styles = StyleSheet.create({
   weekCalendar: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 8,
     justifyContent: 'space-between',
+    paddingHorizontal: 8,
     gap: 8,
   },
   dayItem: {
@@ -676,4 +791,83 @@ const styles = StyleSheet.create({
     fontFamily: 'Gabarito-SemiBold',
     color: '#fff',
   },
+  heatmapContainer: {
+    marginTop: 16,
+  },  
+  heatmapBody: {
+    flexDirection: 'row',
+  },
+  dayColumn: {
+    width: 22,
+    justifyContent: 'space-between',
+    paddingVertical: 2,
+  },
+  
+  dayyLabel: {
+    fontSize: 12,
+    opacity: 0.6,
+  },
+
+  
+  cellEmpty: {
+    backgroundColor: '#E0E0E0',
+  },
+  
+  cellLow: {
+    backgroundColor: '#F7D154',
+  },
+  
+  cellHigh: {
+    backgroundColor: '#4CAF50',
+  },
+  heatmapWrapper: {
+    marginTop: 16,
+  },
+  
+  monthRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  
+  monthLabel: {
+    fontSize: 12,
+    opacity: 0.7,
+  },
+  
+  heatmapRowWrapper: {
+    flexDirection: 'row',
+  },
+  
+  daysColumn: {
+    marginRight: 8,
+    justifyContent: 'space-between',
+  },
+  
+  dayLetter: {
+    fontSize: 12,
+    opacity: 0.7,
+    marginVertical: 6,
+  },
+  
+  gridWrapper: {
+    flex: 1,
+  },
+  
+  gridRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 3,
+  },
+  
+  cell: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+  },
+  
+  cellGrey: { backgroundColor: '#cccccc' },
+  cellYellow: { backgroundColor: '#f4d03f' },
+  cellGreen: { backgroundColor: '#2ecc71' },
+  
 });
