@@ -4,12 +4,14 @@
     "slug": "nextgen-in",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icon.png",
     "scheme": "nextgenin",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "icon": "./assets/icon.png",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
