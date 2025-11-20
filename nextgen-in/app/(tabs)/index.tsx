@@ -7,6 +7,71 @@ import { useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
+
+// Request notification permissions
+async function requestNotificationPermissions() {
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  
+  if (existingStatus !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  
+  if (finalStatus !== 'granted') {
+    alert('Notification permissions not granted!');
+    return false;
+  }
+  
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+  
+  return true;
+}
+
+// Schedule a random notification
+async function scheduleRandomNotification(
+  title: string,
+  body: string,
+  minSeconds: number = 80,
+  maxSeconds: number = 3600
+) {
+  const randomDelay = Math.floor(Math.random() * (maxSeconds - minSeconds + 1)) + minSeconds;
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: body,
+      sound: true,
+      priority: Notifications.AndroidNotificationPriority.HIGH,
+    },
+    trigger: {
+      seconds: randomDelay,
+      repeats: false,
+    } as Notifications.TimeIntervalTriggerInput,
+  });
+  
+  console.log(`Notification scheduled in ${randomDelay} seconds`);
+}
+
 // Define AnimatedActivityCard component outside main component
 type AnimatedActivityCardProps = {
   activity: {
@@ -106,6 +171,26 @@ export default function HomeScreen() {
     setTimeout(() => setShowDoneModal(true), 300);
     setTimeout(() => setShowDoneModal(false), 2000);
   };
+
+  useEffect(() => {
+    // Request permissions and schedule notifications
+    const setupNotifications = async () => {
+      const hasPermission = await requestNotificationPermissions();
+      
+      if (hasPermission) {
+        // Schedule random water quality alerts
+        scheduleRandomNotification(
+          "Nitrate and bacteria Levels",
+          "Sensors show high than average nitrate and bacteria levels, Monitor levels on your dashboard",
+          300,  // 5 minutes minimum
+          1800  // 30 minutes maximum
+        );
+
+      }
+    };
+    
+    setupNotifications();
+  }, []);
 
   if (!fontsLoaded) {
     return null;
