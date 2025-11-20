@@ -321,19 +321,19 @@ export default function HomeScreen() {
                   style={styles.sectorButton}
                   onPress={() => handleAddUnit('Sector A')}
                 >
-                  <Text style={styles.sectorButtonText}>Dissolved Oxygen</Text>
+                  <Text style={styles.sectorButtonText}>Calcium Peroxide</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.sectorButton}
                   onPress={() => handleAddUnit('Sector B')}
                 >
-                  <Text style={styles.sectorButtonText}>pH</Text>
+                  <Text style={styles.sectorButtonText}>Iron-based Nutrient Binder</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.sectorButton}
                   onPress={() => handleAddUnit('Sector C')}
                 >
-                  <Text style={styles.sectorButtonText}>Nitrates</Text>
+                  <Text style={styles.sectorButtonText}>Aluminium-based Nutrient Binder</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.cancelButton}
