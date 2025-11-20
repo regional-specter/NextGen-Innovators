@@ -316,7 +316,7 @@ export default function HomeScreen() {
           >
             <View style={styles.modalOverlay}>
               <View style={styles.sectorModal}>
-                <Text style={styles.sectorModalTitle}>Select Sector</Text>
+                <Text style={styles.sectorModalTitle}>Select Chemical Compound</Text>
                 <TouchableOpacity 
                   style={styles.sectorButton}
                   onPress={() => handleAddUnit('Sector A')}
@@ -973,6 +973,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Gabarito-SemiBold',
     color: '#000',
     marginBottom: 20,
+    letterSpacing: -0.3
   },
   sectorButton: {
     width: '100%',
