@@ -387,7 +387,7 @@ export default function HomeScreen() {
                 <View style={styles.successIconContainer}>
                   <Text style={styles.successIcon}>✓</Text>
                 </View>
-                <Text style={styles.successText}>New BioTrace Unit added</Text>
+                <Text style={styles.successText}>New LilyGuard Unit added</Text>
               </View>
             </View>
           </Modal>
