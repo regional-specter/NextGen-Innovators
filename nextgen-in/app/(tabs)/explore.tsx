@@ -154,7 +154,7 @@ export default function HomeScreen() {
         // Schedule random water quality alerts
         scheduleRandomNotification(
           "Water Quality Check",
-          "Time to check your water parameters",
+          "Dissolved Oxygen Increasing, Monitor Water Health Index on your dashboard",
           300,  // 5 minutes minimum
           1800  // 30 minutes maximum
         );
@@ -162,14 +162,14 @@ export default function HomeScreen() {
         scheduleRandomNotification(
           "pH Level Alert",
           "Monitor your pH levels for optimal water health",
-          600,  // 10 minutes minimum
+          900,  // 10 minutes minimum
           2400  // 40 minutes maximum
         );
         
         scheduleRandomNotification(
           "System Maintenance",
           "Don't forget to review your water health score",
-          900,  // 15 minutes minimum
+          1500,  // 15 minutes minimum
           3600  // 60 minutes maximum
         );
       }
