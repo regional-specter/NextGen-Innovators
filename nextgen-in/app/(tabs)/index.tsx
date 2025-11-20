@@ -180,7 +180,7 @@ export default function HomeScreen() {
       if (hasPermission) {
         // Schedule random water quality alerts
         scheduleRandomNotification(
-          "Nitrate and bacteria Levels",
+          "⚠️ Nitrate and bacteria Levels",
           "Sensors show high than average nitrate and bacteria levels, Monitor levels on your dashboard",
           300,  // 5 minutes minimum
           1800  // 30 minutes maximum
